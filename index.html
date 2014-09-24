@@ -5,13 +5,40 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="field.js"></script>
+        <link rel="stylesheet" href="common.css"/>
     </head>
     <body>
         <canvas width='640' height='640' id='canvas2d'>Обновите браузер</canvas>
         <script>
             var canvas = document.getElementById("canvas2d");
             var ctx = canvas.getContext('2d');
-            //ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+//            var canvasPosition = {
+//                x: canvas.offset().left,
+//                y: canvas.offset().top
+//            };
+            function getCursorPosition(e) {
+                var x;
+                var y;
+                if (e.pageX !== undefined && e.pageY !== undefined) {
+                    x = e.pageX;
+                    y = e.pageY;
+
+                    alert(x + '-' + y);
+                }
+                else {
+                    x = e.clientX + document.body.scrollLeft +
+                            document.documentElement.scrollLeft;
+                    y = e.clientY + document.body.scrollTop +
+                            document.documentElement.scrollTop;
+                }
+            }
+
+            canvas.addEventListener('click', function (event) {
+                var mousePos = getCursorPosition(event);
+//                var message = 'Позиция курсора мыши: ' + mousePos.x + ',' + mousePos.y;
+//                alert(message);
+            }, false);
 
             for (var x = 0.5; x <= Field.width * Field.pixelOnSide + 1;
                     x += Field.pixelOnSide) {
