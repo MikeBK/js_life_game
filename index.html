@@ -13,31 +13,51 @@
             var canvas = document.getElementById("canvas2d");
             var ctx = canvas.getContext('2d');
 
-//            var canvasPosition = {
-//                x: canvas.offset().left,
-//                y: canvas.offset().top
-//            };
-            function getCursorPosition(e) {
-                var x;
-                var y;
-                if (e.pageX !== undefined && e.pageY !== undefined) {
-                    x = e.pageX;
-                    y = e.pageY;
 
-                    alert(x + '-' + y);
+            var canvasPosition = {
+                x: canvas.offsetTop,
+                y: canvas.offsetLeft
+            };
+
+            function getCanvasCursorPosition(e) {
+                var mousePos = {};
+                if (e.pageX !== undefined && e.pageY !== undefined) {
+                    mousePos.x = e.pageX - canvasPosition.x;
+                    mousePos.y = e.pageY - canvasPosition.y;
                 }
                 else {
-                    x = e.clientX + document.body.scrollLeft +
+                    mousePos.x = e.clientX + document.body.scrollLeft +
                             document.documentElement.scrollLeft;
-                    y = e.clientY + document.body.scrollTop +
+                    mousePos.y = e.clientY + document.body.scrollTop +
                             document.documentElement.scrollTop;
                 }
-            }
 
+                var fieldCoord = {};
+                fieldCoord.x = parseInt(mousePos.x / Field.pixelOnSide);
+                fieldCoord.y = parseInt(mousePos.y / Field.pixelOnSide);
+
+                return fieldCoord;
+            }
             canvas.addEventListener('click', function (event) {
-                var mousePos = getCursorPosition(event);
-//                var message = 'Позиция курсора мыши: ' + mousePos.x + ',' + mousePos.y;
-//                alert(message);
+                var mousePos = getCanvasCursorPosition(event);
+
+                if(mousePos.x > Field.width || mousePos.y > Field.height)
+                {
+                    return;
+                }
+
+                var deltaForLine = 1;
+                var side = Field.pixelOnSide-deltaForLine;
+
+                var rectangle = {
+                    left: mousePos.x * Field.pixelOnSide + deltaForLine,
+                    top: mousePos.y * Field.pixelOnSide + deltaForLine
+                };
+
+                Field.array[mousePos.x][mousePos.y] = !Field.array[mousePos.x][mousePos.y];
+
+                ctx.fillStyle = (Field.array[mousePos.x][mousePos.y]? "#000": "#fff");
+                ctx.fillRect(rectangle.left, rectangle.top, side, side);
             }, false);
 
             for (var x = 0.5; x <= Field.width * Field.pixelOnSide + 1;
