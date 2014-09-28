@@ -1,13 +1,17 @@
-
-var Field = {};
-Field.width = 50;
-Field.height = 50;
-Field.pixelOnSide = 10;
-Field.array = [];
-
-for (var i = 0; i < Field.width; i++) {
-    Field.array[i] = [];
-    for (var j = 0; j < Field.height; j++) {
-        Field.array[i][j] = false;
+var Field = {
+    width: 50,
+    height: 50,
+    pixelOnSide: 10,
+    colorFill: '#000',
+    colorEmpty: '#fff',
+    array: [],
+    init: function() {
+        for (var i = 0; i < this.width; i++) {
+            this.array[i] = [];
+            for (var j = 0; j < this.height; j++) {
+                this.array[i][j] = false;
+            }
+        }
     }
-}
+};
+

@@ -22,7 +22,12 @@ function getCanvasCursorPosition(e) {
     return fieldCoord;
 }
 
-function fillCell(event) {
+function fillCellOnMousePos(event) {
+
+    if(game.status !== 0){
+        return;
+    }
+
     var mousePos = getCanvasCursorPosition(event);
 
     if (mousePos.x > Field.width || mousePos.y > Field.height)
@@ -40,7 +45,7 @@ function fillCell(event) {
 
     Field.array[mousePos.x][mousePos.y] = !Field.array[mousePos.x][mousePos.y];
 
-    ctx.fillStyle = (Field.array[mousePos.x][mousePos.y] ? "#000" : "#fff");
+    ctx.fillStyle = (Field.array[mousePos.x][mousePos.y] ? Field.colorFill : Field.colorEmpty);
     ctx.fillRect(rectangle.left, rectangle.top, side, side);
 }
 
@@ -52,7 +57,7 @@ function canvasInit(canvasId) {
     canvasPosition.x = canvas.offsetTop;
     canvasPosition.y = canvas.offsetLeft;
 
-    canvas.addEventListener('click', fillCell, false);
+    canvas.addEventListener('click', fillCellOnMousePos, false);
 
     for (var x = 0.5; x <= Field.width * Field.pixelOnSide + 1;
             x += Field.pixelOnSide) {

@@ -4,16 +4,31 @@
         <title>js_life_game</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script type="text/javascript" src="field.js"></script>
         <script type="text/javascript" src="canvas.js"></script>
+        <script type="text/javascript" src="field.js"></script>
+        <script type="text/javascript" src="lifeGame.js"></script>
         <link rel="stylesheet" href="common.css"/>
     </head>
     <body>
         <canvas width='640' height='640' id='canvas2d'>Обновите браузер</canvas>
         <script>
 
+            Field.init();
+            var game = new LifeGame();
+            game.init();
             canvasInit('canvas2d');
 
+            setInterval(gameMain, 1000);
+
+            function StartGame() {
+                game.status = (game.status === 0) ? 1 : 0;
+            }
+
+            function gameMain() {
+                game.main();
+            }
+
         </script>
+        <div id="game_start" onclick="StartGame()">StartGame</div>
     </body>
 </html>
