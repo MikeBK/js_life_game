@@ -1,8 +1,9 @@
-var CanvasManager = (function () {
+var CanvasManager = (function() {
 
     var canvas;
     var ctx;
     var canvasPosition = {};
+    var isMouseDown = false;
 
     function getCanvasCursorPosition(e) {
         var mousePos = {};
@@ -26,13 +27,17 @@ var CanvasManager = (function () {
 
     function fillCellOnMousePos(event) {
 
+        if (!isMouseDown) {
+            return;
+        }
+
         if (LifeGame.getStatus() !== LifeGameStatus.init) {
             return;
         }
 
         var mousePos = getCanvasCursorPosition(event);
 
-        if (mousePos.x > Field.width || mousePos.y > Field.height)
+        if (mousePos.x > Field.width-1 || mousePos.y > Field.height-1)
         {
             return;
         }
@@ -45,15 +50,26 @@ var CanvasManager = (function () {
             top: mousePos.y * Field.pixelOnSide + deltaForLine
         };
 
-        Field.array[mousePos.x][mousePos.y] = !Field.array[mousePos.x][mousePos.y];
+        if (event.shiftKey) {
+            Field.array[mousePos.x][mousePos.y] = false;
+        } else {
+            Field.array[mousePos.x][mousePos.y] = true;
+        }
 
         ctx.fillStyle = (Field.array[mousePos.x][mousePos.y] ? Field.colorFill : Field.colorEmpty);
         ctx.fillRect(rectangle.left, rectangle.top, side, side);
     }
 
+    function canvasMouseDown() {
+        isMouseDown = true;
+    }
+
+    function canvasMouseUp() {
+        isMouseDown = false;
+    }
 
     return {
-        init: function (canvasId) {
+        init: function(canvasId) {
 
             canvas = document.getElementById(canvasId);
             ctx = canvas.getContext('2d');
@@ -61,13 +77,15 @@ var CanvasManager = (function () {
             canvasPosition.x = canvas.offsetTop;
             canvasPosition.y = canvas.offsetLeft;
 
-            canvas.addEventListener('click', fillCellOnMousePos, false);
+            canvas.addEventListener('mousemove', fillCellOnMousePos, false);
+            document.addEventListener('mousedown', canvasMouseDown, false);
+            document.addEventListener('mouseup', canvasMouseUp, false);
 
             this.drawGrid();
 
         },
-        drawGrid : function(){
-            
+        drawGrid: function() {
+
             for (var x = 0.5; x <= Field.width * Field.pixelOnSide + 1;
                     x += Field.pixelOnSide) {
                 ctx.moveTo(0, x);
@@ -84,11 +102,11 @@ var CanvasManager = (function () {
             ctx.stroke();
 
         },
-        clear : function(){
+        clear: function() {
             canvas.width = canvas.width;
             ctx.fillStyle = Field.colorFill;
         },
-        fillRect: function (left, top, width, height){
+        fillRect: function(left, top, width, height) {
             ctx.fillRect(left, top, width, height);
         }
 
