@@ -4,31 +4,34 @@
         <title>js_life_game</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="common.css"/>
         <script type="text/javascript" src="canvas.js"></script>
         <script type="text/javascript" src="field.js"></script>
         <script type="text/javascript" src="lifeGame.js"></script>
-        <link rel="stylesheet" href="common.css"/>
     </head>
     <body>
-        <canvas width='640' height='640' id='canvas2d'>Обновите браузер</canvas>
+        <canvas class="gameField" width='640' height='640' id='canvas2d'>Обновите браузер</canvas>
+        <div class="gameButton" id="gameButton" onclick="ChangeGameState()">StartGame</div>
         <script>
 
+            CanvasManager.init('canvas2d');
             Field.init();
-            var game = new LifeGame();
-            game.init();
-            canvasInit('canvas2d');
+            LifeGame.init();
 
-            setInterval(gameMain, 1000);
+            var gameButton = document.getElementById('gameButton');
 
-            function StartGame() {
-                game.status = (game.status === 0) ? 1 : 0;
+            function ChangeGameState() {
+                if (LifeGame.getStatus() === LifeGameStatus.init) {
+                    LifeGame.starGame();
+                    gameButton.innerHTML = 'StopGame';
+                } else {
+                    LifeGame.stopGame();
+                    gameButton.innerHTML = 'StartGame';
+                }
             }
 
-            function gameMain() {
-                game.main();
-            }
+            setInterval(LifeGame.main, 1000);
 
         </script>
-        <div id="game_start" onclick="StartGame()">StartGame</div>
     </body>
 </html>
