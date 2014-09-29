@@ -63,6 +63,11 @@ var CanvasManager = (function () {
 
             canvas.addEventListener('click', fillCellOnMousePos, false);
 
+            this.drawGrid();
+
+        },
+        drawGrid : function(){
+            
             for (var x = 0.5; x <= Field.width * Field.pixelOnSide + 1;
                     x += Field.pixelOnSide) {
                 ctx.moveTo(0, x);
@@ -77,6 +82,7 @@ var CanvasManager = (function () {
 
             ctx.strokeStyle = "#000";
             ctx.stroke();
+
         },
         clear : function(){
             canvas.width = canvas.width;

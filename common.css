@@ -5,3 +5,10 @@ body{
 .gameField{
     float: left;
 }
+
+.gameButton{
+    width: 80px;
+    height: 20px;
+    text-align: center;
+    float: left;
+}

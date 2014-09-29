@@ -56,12 +56,12 @@ var LifeGame = (function () {
         CanvasManager.clear();
 
         var deltaForLine = 1;
-        var side = Field.pixelOnSide + deltaForLine;
+        var side = Field.pixelOnSide - deltaForLine;
         for (var i = 0; i < Field.width; i++) {
             for (var j = 0; j < Field.height; j++) {
 
                 if (Field.array[i][j]) {
-                    CanvasManager.fillRect(i * side, j * side, side, side);
+                    CanvasManager.fillRect(i * Field.pixelOnSide + deltaForLine, j * Field.pixelOnSide + deltaForLine, side, side);
                 }
             }
         }
