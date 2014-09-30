@@ -3,70 +3,6 @@ var CanvasManager = (function() {
     var canvas;
     var ctx;
     var canvasPosition = {};
-    var isMouseDown = false;
-
-    function getCanvasCursorPosition(e) {
-        var mousePos = {};
-        if (e.pageX !== undefined && e.pageY !== undefined) {
-            mousePos.x = e.pageX - canvasPosition.x;
-            mousePos.y = e.pageY - canvasPosition.y;
-        }
-        else {
-            mousePos.x = e.clientX + document.body.scrollLeft +
-                    document.documentElement.scrollLeft;
-            mousePos.y = e.clientY + document.body.scrollTop +
-                    document.documentElement.scrollTop;
-        }
-
-        var fieldCoord = {};
-        fieldCoord.x = parseInt(mousePos.x / Field.pixelOnSide);
-        fieldCoord.y = parseInt(mousePos.y / Field.pixelOnSide);
-
-        return fieldCoord;
-    }
-
-    function fillCellOnMousePos(event) {
-
-        if (!isMouseDown) {
-            return;
-        }
-
-        if (LifeGame.getStatus() !== LifeGameStatus.FIELD_SET) {
-            return;
-        }
-
-        var mousePos = getCanvasCursorPosition(event);
-
-        if (mousePos.x > Field.width-1 || mousePos.y > Field.height-1)
-        {
-            return;
-        }
-
-        var deltaForLine = 1;
-        var side = Field.pixelOnSide - deltaForLine;
-
-        var rectangle = {
-            left: mousePos.x * Field.pixelOnSide + deltaForLine,
-            top: mousePos.y * Field.pixelOnSide + deltaForLine
-        };
-
-        if (event.shiftKey) {
-            Field.array[mousePos.x][mousePos.y] = false;
-        } else {
-            Field.array[mousePos.x][mousePos.y] = true;
-        }
-
-        ctx.fillStyle = (Field.array[mousePos.x][mousePos.y] ? Field.colorFill : Field.colorEmpty);
-        ctx.fillRect(rectangle.left, rectangle.top, side, side);
-    }
-
-    function canvasMouseDown() {
-        isMouseDown = true;
-    }
-
-    function canvasMouseUp() {
-        isMouseDown = false;
-    }
 
     return {
         init: function(canvasId) {
@@ -78,8 +14,6 @@ var CanvasManager = (function() {
             canvasPosition.y = canvas.offsetLeft;
 
             canvas.addEventListener('mousemove', fillCellOnMousePos, false);
-            document.addEventListener('mousedown', canvasMouseDown, false);
-            document.addEventListener('mouseup', canvasMouseUp, false);
 
             this.drawGrid();
 
@@ -98,16 +32,19 @@ var CanvasManager = (function() {
                 ctx.lineTo(y, Field.height * Field.pixelOnSide);
             }
 
-            ctx.strokeStyle = "#000";
+            ctx.strokeStyle = Field.getColorFill();
             ctx.stroke();
 
         },
         clear: function() {
             canvas.width = canvas.width;
-            ctx.fillStyle = Field.colorFill;
+            ctx.fillStyle = Field.getColorFill();
         },
         fillRect: function(left, top, width, height) {
             ctx.fillRect(left, top, width, height);
+        },
+        setFillStyle: function(newStyle){
+            ctx.fillStyle = newStyle;
         }
 
     };

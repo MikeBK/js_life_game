@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="common.css"/>
         <script type="text/javascript" src="canvas.js"></script>
+        <script type="text/javascript" src="input.js"></script>
         <script type="text/javascript" src="field.js"></script>
         <script type="text/javascript" src="lifeGame.js"></script>
     </head>
@@ -15,13 +16,14 @@
         <script>
 
             CanvasManager.init('canvas2d');
+            Input.init();
             Field.init();
             LifeGame.init();
 
             var gameButton = document.getElementById('gameButton');
 
             function ChangeGameState() {
-                if (LifeGame.getStatus() === LifeGameStatus.init) {
+                if (LifeGame.getStatus() === LifeGameStatus.FIELD_SET) {
                     LifeGame.starGame();
                     gameButton.innerHTML = 'StopGame';
                 } else {
