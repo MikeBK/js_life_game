@@ -23,11 +23,29 @@ var Field = (function() {
         getCell: function(i, j) {
             return array[i][j];
         },
+        setCell: function(i, j, value){
+            array[i][j] = value;
+        },
+        getCellCopy: function(i, j) {
+            return arrayCopy[i][j];
+        },
         getColorFill: function() {
             return colorFill;
         },
         getColorEmpty: function() {
             return colorEmpty;
+        },
+        swapBuffer: function() {
+            var tmp = array;
+            array = arrayCopy;
+            arrayCopy = tmp;
+        },
+        fieldMap: function(fn) {
+            for (var i = 0; i < width; i++) {
+                for (var j = 0; j < height; j++) {
+                    fn(i,j);
+                }
+            }
         },
         drawField: function() {
             CanvasManager.clear();
@@ -45,16 +63,14 @@ var Field = (function() {
 
             for (var x = 0.5; x <= width * pixelOnSide + 1;
                     x += pixelOnSide) {
-                        CanvasManager.line(0,x, width * pixelOnSide, x);
+                CanvasManager.line(0, x, width * pixelOnSide, x);
             }
 
             for (var y = 0.5; y < height * pixelOnSide + 1;
                     y += pixelOnSide) {
-                CanvasManager.line(y,0, y, height * pixelOnSide);
+                CanvasManager.line(y, 0, y, height * pixelOnSide);
             }
 
-//            ctx.strokeStyle = getColorFill();
-//            ctx.stroke();
             CanvasManager.stroke(this.getColorFill());
 
         },
