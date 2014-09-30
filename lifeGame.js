@@ -1,10 +1,10 @@
 var LifeGameStatus = {
-    init: 0,
-    game: 1
+    FIELD_SET: 0,
+    GAME_ON: 1
 };
 
 var LifeGame = (function () {
-    var status = LifeGameStatus.init; //0 - расстановка / 1 - игра
+    var status = LifeGameStatus.FIELD_SET; //0 - расстановка / 1 - игра
     var turn = 0;
     var fieldCopy = [];
 
@@ -79,17 +79,17 @@ var LifeGame = (function () {
 
         },
         main: function () {
-            if (status === LifeGameStatus.game) {
+            if (status === LifeGameStatus.GAME_ON) {
                 updateField();
                 drawField();
                 turn++;
             }
         },
         starGame: function () {
-            status = LifeGameStatus.game;
+            status = LifeGameStatus.GAME_ON;
         },
         stopGame: function () {
-            status = LifeGameStatus.init;
+            status = LifeGameStatus.FIELD_SET;
         },
         getStatus: function () {
             return status;

@@ -31,7 +31,7 @@ var CanvasManager = (function() {
             return;
         }
 
-        if (LifeGame.getStatus() !== LifeGameStatus.init) {
+        if (LifeGame.getStatus() !== LifeGameStatus.FIELD_SET) {
             return;
         }
 
