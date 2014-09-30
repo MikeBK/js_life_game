@@ -1,6 +1,6 @@
-var Field = (function () {
+var Field = (function() {
     var arrayCopy;
-    var array;
+    var array = [];
     var width = 50;
     var height = 50;
     var pixelOnSide = 10;
@@ -9,7 +9,7 @@ var Field = (function () {
     var colorEmpty = '#fff';
 
     return {
-        init: function () {
+        init: function() {
             for (var i = 0; i < width; i++) {
                 array[i] = [];
                 for (var j = 0; j < height; j++) {
@@ -18,17 +18,18 @@ var Field = (function () {
             }
 
             arrayCopy = array.slice(0);
+            this.drawGrid();
         },
-        getCell: function (i, j) {
+        getCell: function(i, j) {
             return array[i][j];
         },
-        getColorFill: function(){
+        getColorFill: function() {
             return colorFill;
         },
-        getColorEmpty: function(){
+        getColorEmpty: function() {
             return colorEmpty;
         },
-        drawField: function () {
+        drawField: function() {
             CanvasManager.clear();
 
             var side = pixelOnSide - deltaForLine;
@@ -40,7 +41,24 @@ var Field = (function () {
                 }
             }
         },
-        countNear1: function (x, y) {
+        drawGrid: function() {
+
+            for (var x = 0.5; x <= width * pixelOnSide + 1;
+                    x += pixelOnSide) {
+                        CanvasManager.line(0,x, width * pixelOnSide, x);
+            }
+
+            for (var y = 0.5; y < height * pixelOnSide + 1;
+                    y += pixelOnSide) {
+                CanvasManager.line(y,0, y, height * pixelOnSide);
+            }
+
+//            ctx.strokeStyle = getColorFill();
+//            ctx.stroke();
+            CanvasManager.stroke(this.getColorFill());
+
+        },
+        countNear1: function(x, y) {
             var count = 0;
             for (var i = -1; i < 2; i++) {
                 if (x + i < 0 || x + i > width - 1) {
@@ -60,20 +78,21 @@ var Field = (function () {
             }
             return count;
         },
-        fillCellOnMousePos: function (event) {
+        fillCellOnMousePos: function(event) {
 
             if (!Input.getIsMouseDown()) {
                 return;
             }
 
-            if (LifeGame.getStatus() !== LifeGameStatus.FIELD_SET) {
+            if (LifeGame.getStatus() !== LifeGameSTATUS.FIELD_SET) {
                 return;
             }
 
-            var mousePos = getCanvasCursorPosition(event);
+            var mousePos = Input.getCursorPosition(event);
+            mousePos = CanvasManager.getCanvasCursorPosition(mousePos);
 
-            mousePos.x = parseInt(mousePos.x / Field.pixelOnSide);
-            mousePos.y = parseInt(mousePos.y / Field.pixelOnSide);
+            mousePos.x = parseInt(mousePos.x / pixelOnSide);
+            mousePos.y = parseInt(mousePos.y / pixelOnSide);
 
             if (mousePos.x > width - 1 || mousePos.y > height - 1)
             {

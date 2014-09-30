@@ -17,11 +17,11 @@ var Input = (function () {
         getIsMouseDown: function () {
             return isMouseDown;
         },
-        getCanvasCursorPosition: function (e) {
+        getCursorPosition: function (e) {
             var mousePos = {};
             if (e.pageX !== undefined && e.pageY !== undefined) {
-                mousePos.x = e.pageX - canvasPosition.x;
-                mousePos.y = e.pageY - canvasPosition.y;
+                mousePos.x = e.pageX;
+                mousePos.y = e.pageY;
             }
             else {
                 mousePos.x = e.clientX + document.body.scrollLeft +

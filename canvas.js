@@ -2,7 +2,8 @@ var CanvasManager = (function() {
 
     var canvas;
     var ctx;
-    var canvasPosition = {};
+    var canvasPosition = {x: 0, y: 0};
+    var defaultColor = '#000';
 
     return {
         init: function(canvasId) {
@@ -13,38 +14,35 @@ var CanvasManager = (function() {
             canvasPosition.x = canvas.offsetTop;
             canvasPosition.y = canvas.offsetLeft;
 
-            canvas.addEventListener('mousemove', fillCellOnMousePos, false);
-
-            this.drawGrid();
+            canvas.addEventListener('mousemove', Field.fillCellOnMousePos, false);
 
         },
-        drawGrid: function() {
+        getCanvasCursorPosition: function(mousePos) {
 
-            for (var x = 0.5; x <= Field.width * Field.pixelOnSide + 1;
-                    x += Field.pixelOnSide) {
-                ctx.moveTo(0, x);
-                ctx.lineTo(Field.width * Field.pixelOnSide, x);
-            }
+            mousePos.x -= canvasPosition.x;
+            mousePos.y -= canvasPosition.y;
 
-            for (var y = 0.5; y < Field.height * Field.pixelOnSide + 1;
-                    y += Field.pixelOnSide) {
-                ctx.moveTo(y, 0);
-                ctx.lineTo(y, Field.height * Field.pixelOnSide);
-            }
-
-            ctx.strokeStyle = Field.getColorFill();
-            ctx.stroke();
-
+            return mousePos;
         },
         clear: function() {
             canvas.width = canvas.width;
-            ctx.fillStyle = Field.getColorFill();
+            ctx.fillStyle = defaultColor;
         },
         fillRect: function(left, top, width, height) {
             ctx.fillRect(left, top, width, height);
         },
-        setFillStyle: function(newStyle){
+        setFillStyle: function(newStyle) {
             ctx.fillStyle = newStyle;
+        },
+        line: function(x, y, toX, toY) {
+            ctx.moveTo(x, y);
+            ctx.lineTo(toX, toY);
+        },
+        stroke: function(color) {
+            if (typeof color !== "undefined") {
+                ctx.strokeStyle = color;
+            }
+            ctx.stroke();
         }
 
     };

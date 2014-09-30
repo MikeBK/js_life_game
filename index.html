@@ -15,20 +15,20 @@
         <div class="gameButton" id="gameButton" onclick="ChangeGameState()">StartGame</div>
         <script>
 
-            CanvasManager.init('canvas2d');
             Input.init();
+            CanvasManager.init('canvas2d');
             Field.init();
             LifeGame.init();
 
             var gameButton = document.getElementById('gameButton');
 
             function ChangeGameState() {
-                if (LifeGame.getStatus() === LifeGameStatus.FIELD_SET) {
+                if (LifeGame.getStatus() === LifeGameSTATUS.FIELD_SET) {
                     LifeGame.starGame();
                     gameButton.innerHTML = 'StopGame';
                 } else {
                     LifeGame.stopGame();
-                    CanvasManager.drawGrid();
+                    Field.drawGrid();
                     gameButton.innerHTML = 'StartGame';
                 }
             }
