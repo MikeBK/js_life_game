@@ -1,4 +1,4 @@
-var Field = (function() {
+var Field = (function () {
     var arrayCopy;
     var array = [];
     var width = 50;
@@ -9,7 +9,7 @@ var Field = (function() {
     var colorEmpty = '#fff';
 
     return {
-        init: function() {
+        init: function () {
             for (var i = 0; i < width; i++) {
                 array[i] = [];
                 for (var j = 0; j < height; j++) {
@@ -20,34 +20,34 @@ var Field = (function() {
             arrayCopy = array.slice(0);
             this.drawGrid();
         },
-        getCell: function(i, j) {
+        getCell: function (i, j) {
             return array[i][j];
         },
-        setCell: function(i, j, value){
+        setCell: function (i, j, value) {
             array[i][j] = value;
         },
-        getCellCopy: function(i, j) {
+        getCellCopy: function (i, j) {
             return arrayCopy[i][j];
         },
-        getColorFill: function() {
+        getColorFill: function () {
             return colorFill;
         },
-        getColorEmpty: function() {
+        getColorEmpty: function () {
             return colorEmpty;
         },
-        swapBuffer: function() {
+        swapBuffer: function () {
             var tmp = array;
             array = arrayCopy;
             arrayCopy = tmp;
         },
-        fieldMap: function(fn) {
+        fieldMap: function (fn) {
             for (var i = 0; i < width; i++) {
                 for (var j = 0; j < height; j++) {
-                    fn(i,j);
+                    fn(i, j);
                 }
             }
         },
-        drawField: function() {
+        drawField: function () {
             CanvasManager.clear();
 
             var side = pixelOnSide - deltaForLine;
@@ -59,7 +59,7 @@ var Field = (function() {
                 }
             }
         },
-        drawGrid: function() {
+        drawGrid: function () {
 
             for (var x = 0.5; x <= width * pixelOnSide + 1;
                     x += pixelOnSide) {
@@ -74,7 +74,7 @@ var Field = (function() {
             CanvasManager.stroke(this.getColorFill());
 
         },
-        countNear1: function(x, y) {
+        countNear1: function (x, y) {
             var count = 0;
             for (var i = -1; i < 2; i++) {
                 if (x + i < 0 || x + i > width - 1) {
@@ -94,7 +94,7 @@ var Field = (function() {
             }
             return count;
         },
-        fillCellOnMousePos: function(event) {
+        fillCellOnMousePos: function (event) {
 
             if (!Input.getIsMouseDown()) {
                 return;

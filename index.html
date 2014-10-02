@@ -11,8 +11,10 @@
         <script type="text/javascript" src="lifeGame.js"></script>
     </head>
     <body>
-        <canvas class="gameField" width='640' height='640' id='canvas2d'>Обновите браузер</canvas>
-        <div class="gameButton" id="gameButton" onclick="ChangeGameState()">StartGame</div>
+        <div class="content">
+            <canvas class="gameField" width='501' height='501' id='canvas2d'>Обновите браузер</canvas>
+            <div class="gameButton" id="gameButton" onclick="ChangeGameState()">StartGame</div>
+        </div>
         <script>
 
             Input.init();
@@ -33,7 +35,7 @@
                 }
             }
 
-            setInterval(LifeGame.main, 1000);
+            setInterval(LifeGame.main, 1000/3);
 
         </script>
     </body>

@@ -1,4 +1,4 @@
-var CanvasManager = (function() {
+var CanvasManager = (function () {
 
     var canvas;
     var ctx;
@@ -6,39 +6,39 @@ var CanvasManager = (function() {
     var defaultColor = '#000';
 
     return {
-        init: function(canvasId) {
+        init: function (canvasId) {
 
             canvas = document.getElementById(canvasId);
             ctx = canvas.getContext('2d');
 
-            canvasPosition.x = canvas.offsetTop;
-            canvasPosition.y = canvas.offsetLeft;
+            canvasPosition.x = canvas.offsetLeft;
+            canvasPosition.y = canvas.offsetTop;
 
             canvas.addEventListener('mousemove', Field.fillCellOnMousePos, false);
 
         },
-        getCanvasCursorPosition: function(mousePos) {
+        getCanvasCursorPosition: function (mousePos) {
 
             mousePos.x -= canvasPosition.x;
             mousePos.y -= canvasPosition.y;
 
             return mousePos;
         },
-        clear: function() {
+        clear: function () {
             canvas.width = canvas.width;
             ctx.fillStyle = defaultColor;
         },
-        fillRect: function(left, top, width, height) {
+        fillRect: function (left, top, width, height) {
             ctx.fillRect(left, top, width, height);
         },
-        setFillStyle: function(newStyle) {
+        setFillStyle: function (newStyle) {
             ctx.fillStyle = newStyle;
         },
-        line: function(x, y, toX, toY) {
+        line: function (x, y, toX, toY) {
             ctx.moveTo(x, y);
             ctx.lineTo(toX, toY);
         },
-        stroke: function(color) {
+        stroke: function (color) {
             if (typeof color !== "undefined") {
                 ctx.strokeStyle = color;
             }
