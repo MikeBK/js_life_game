@@ -1,5 +1,5 @@
 var Field = (function () {
-    var arrayCopy;
+    var arrayCopy = [];
     var array = [];
     var width = 50;
     var height = 50;
@@ -12,12 +12,13 @@ var Field = (function () {
         init: function () {
             for (var i = 0; i < width; i++) {
                 array[i] = [];
+                arrayCopy[i] = [];
                 for (var j = 0; j < height; j++) {
                     array[i][j] = false;
+                    arrayCopy[i][j] = false;
                 }
             }
 
-            arrayCopy = array.slice(0);
             this.drawGrid();
         },
         getCell: function (i, j) {
@@ -35,10 +36,12 @@ var Field = (function () {
         getColorEmpty: function () {
             return colorEmpty;
         },
-        swapBuffer: function () {
-            var tmp = array;
-            array = arrayCopy;
-            arrayCopy = tmp;
+        fieldArrayToCopy: function () {
+            for (var i = 0; i < width; i++) {
+                for (var j = 0; j < height; j++) {
+                    arrayCopy[i][j] = array[i][j];
+                }
+            }
         },
         fieldMap: function (fn) {
             for (var i = 0; i < width; i++) {
@@ -77,17 +80,19 @@ var Field = (function () {
         countNear1: function (x, y) {
             var count = 0;
             for (var i = -1; i < 2; i++) {
+                //Проверка на выход за границы поля
                 if (x + i < 0 || x + i > width - 1) {
                     continue;
                 }
                 for (var j = -1; j < 2; j++) {
+                    //Проверка на выход за границы поля
                     if (y + j < 0 || y + j > height - 1
                             || (i === 0 && j === 0))
                     {
                         continue;
                     }
 
-                    if (array[x + i][y + j]) {
+                    if (arrayCopy[x + i][y + j]) {
                         count++;
                     }
                 }
@@ -130,7 +135,27 @@ var Field = (function () {
 
             CanvasManager.setFillStyle(array[mousePos.x][mousePos.y] ? colorFill : colorEmpty);
             CanvasManager.fillRect(rectangle.left, rectangle.top, side, side);
+        },
+        countNear1OnClick: function (event) {
+
+            var mousePos = Input.getCursorPosition(event);
+            mousePos = CanvasManager.getCanvasCursorPosition(mousePos);
+
+            mousePos.x = parseInt(mousePos.x / pixelOnSide);
+            mousePos.y = parseInt(mousePos.y / pixelOnSide);
+
+            if (mousePos.x > width - 1 || mousePos.y > height - 1)
+            {
+                return;
+            }
+
+
+            if (event.shiftKey) {
+                var count = Field.countNear1(mousePos.x, mousePos.x);
+                console.log(mousePos.x,mousePos.y,count);
+            }
         }
+
 
 
 

@@ -15,6 +15,7 @@ var CanvasManager = (function () {
             canvasPosition.y = canvas.offsetTop;
 
             canvas.addEventListener('mousemove', Field.fillCellOnMousePos, false);
+            // canvas.addEventListener('click', Field.countNear1OnClick, false);
 
         },
         getCanvasCursorPosition: function (mousePos) {

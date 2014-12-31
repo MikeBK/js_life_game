@@ -9,7 +9,7 @@ var LifeGame = (function () {
 
     function updateField() {
 
-        Field.swapBuffer();
+        Field.fieldArrayToCopy();
 
         Field.fieldMap(function (i, j) {
             var countN = Field.countNear1(i, j);
@@ -20,6 +20,7 @@ var LifeGame = (function () {
                 Field.setCell(i, j, (countN === 3));
             }
         });
+
     }
 
     return {
