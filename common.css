@@ -21,3 +21,8 @@ body{
 .gameButton:hover{
     cursor: pointer;
 }
+
+.gameInputPercent{
+    width: 30px;
+    text-align: center;
+}

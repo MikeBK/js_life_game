@@ -13,7 +13,15 @@
     <body>
         <div class="content">
             <canvas class="gameField" width='501' height='501' id='canvas2d'>Обновите браузер</canvas>
-            <div class="gameButton" id="gameButton" onclick="ChangeGameState()">StartGame</div>
+            <div>
+                <div>
+                    <input type="button" class="gameButton" id="gameButton" onclick="ChangeGameState()" value="StartGame">
+                </div>
+                <div>
+                    <input type="button" class="gameButton" id="fillButton" onclick="FillField()" value="FillField">
+                    <input type="text" class="gameInputPercent" id="fillPercent" value="50"><span>%</span>
+                </div>
+            </div>
         </div>
         <script>
 
@@ -23,16 +31,39 @@
             LifeGame.init();
 
             var gameButton = document.getElementById('gameButton');
+            var gameFillButton = document.getElementById('fillButton');
+            var gameInputPercent = document.getElementById('fillPercent');
 
             function ChangeGameState() {
                 if (LifeGame.getStatus() === LifeGameSTATUS.FIELD_SET) {
                     LifeGame.starGame();
-                    gameButton.innerHTML = 'StopGame';
+                    gameButton.value = 'StopGame';
+
+                    gameFillButton.disabled = true;
+                    gameInputPercent.disabled = true;
                 } else {
                     LifeGame.stopGame();
                     Field.drawGrid();
-                    gameButton.innerHTML = 'StartGame';
+                    gameButton.value = 'StartGame';
+
+                    gameFillButton.disabled = false;
+                    gameInputPercent.disabled = false;
                 }
+            }
+
+            function FillField(){
+                var percent = parseInt(gameInputPercent.value, 10);
+
+                if(percent < 0 || percent > 100){
+                    percent = 0;
+                }
+
+                percent = percent / 100;
+
+                console.log(percent);
+
+
+                Field.fillFieldByRandom(percent);
             }
 
             setInterval(LifeGame.main, 1000/3);

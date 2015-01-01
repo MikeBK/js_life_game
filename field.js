@@ -14,12 +14,29 @@ var Field = (function () {
                 array[i] = [];
                 arrayCopy[i] = [];
                 for (var j = 0; j < height; j++) {
-                    array[i][j] = false;
-                    arrayCopy[i][j] = false;
+                    array[i][j] = arrayCopy[i][j] = false;
                 }
             }
 
             this.drawGrid();
+        },
+        fillFieldByRandom: function (percent) {
+            // percent - шанас выпадения живой клетки
+
+
+            if(percent >1 || percent < 0){
+                percent = 0
+            }
+
+
+
+            for (var i = 0; i < width; i++) {
+                for (var j = 0; j < height; j++) {
+                    array[i][j] = arrayCopy[i][j] = (Math.random() < percent) ? true : false;
+                }
+            }
+
+            this.drawField();
         },
         getCell: function (i, j) {
             return array[i][j];
@@ -64,6 +81,7 @@ var Field = (function () {
         },
         drawGrid: function () {
 
+            //Начинаем с 0,5 для получения линий в 1 пиксель
             for (var x = 0.5; x <= width * pixelOnSide + 1;
                     x += pixelOnSide) {
                 CanvasManager.line(0, x, width * pixelOnSide, x);
